@@ -17,14 +17,16 @@ typedef struct TreeNode {
     struct TreeNode *l, *r;
 }LSTreeNode;
 
-//获取高度，从底下往上累加，调用频率较高，改成强制内联
-static __attribute__((always_inline)) int getHeight(LSTreeNode *node) {
-    int heightX = 0;
-    while (node) {
-        heightX++;
-        node = node->l ? node->l : node->r;
+//获取高度，从底下往上递归累加
+int getHeight(LSTreeNode *node) {
+    if (!node) return 0;
+    int lHeight = getHeight(node->l);
+    int rHeight = getHeight(node->r);
+    if (lHeight > rHeight) {
+        return lHeight + 1;
+    }else {
+        return rHeight + 1;
     }
-    return heightX;
 }
 
 //左旋rightNode必须存在
